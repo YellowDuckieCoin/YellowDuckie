@@ -1,0 +1,22 @@
+{
+  "name": "Yellow Duckie Coin",
+  "symbol": "YD",
+  "image": "https://raw.githubusercontent.com/YellowDuckieCoin/YellowDuckie/refs/heads/main/logo-256.png",
+  "description": "Yellow Duckie",
+  "extensions": {
+    "website": "https://yellowduckie.net",
+    "twitter": "https://x.com/YellowDuckNet",
+    "github": "https://github.com/YellowDuckieCoin/YellowDuckie",
+    "discord": "https://discord.gg/XFKbTVeNPC"
+  },
+  "tags": [
+    "Meme",
+    "Duck",
+    "Duckie",
+    "YD"
+  ],
+  "creator": {
+    "name": "Yellow Duckie Coin Team",
+    "site": "https://yellowduckie.net"
+  }
+}
