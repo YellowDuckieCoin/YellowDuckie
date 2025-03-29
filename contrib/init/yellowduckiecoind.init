@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+#  yellowduckiecoind The yellowduckiecoin core server.
+#
+#
+# chkconfig: 345 80 20
+# description: yellowduckiecoind
+# processname: yellowduckiecoind
+#
+
+# Source function library.
+. /etc/init.d/functions
+
+# you can override defaults in /etc/sysconfig/yellowduckiecoind, see below
+if [ -f /etc/sysconfig/yellowduckiecoind ]; then
+        . /etc/sysconfig/yellowduckiecoind
+fi
+
+RETVAL=0
+
+prog=yellowduckiecoind
+# you can override the lockfile via YellowDuckieCoinD_LOCKFILE in /etc/sysconfig/yellowduckiecoind
+lockfile=${YellowDuckieCoinD_LOCKFILE-/var/lock/subsys/yellowduckiecoind}
+
+# yellowduckiecoind defaults to /usr/bin/yellowduckiecoind, override with YellowDuckieCoinD_BIN
+yellowduckiecoind=${YellowDuckieCoinD_BIN-/usr/bin/yellowduckiecoind}
+
+# yellowduckiecoind opts default to -disablewallet, override with YellowDuckieCoinD_OPTS
+yellowduckiecoind_opts=${YellowDuckieCoinD_OPTS--disablewallet}
+
+start() {
+    echo -n $"Starting $prog: "
+    daemon $DAEMONOPTS $yellowduckiecoind $yellowduckiecoind_opts
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && touch $lockfile
+    return $RETVAL
+}
+
+stop() {
+    echo -n $"Stopping $prog: "
+    killproc $prog
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && rm -f $lockfile
+    return $RETVAL
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status $prog
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage: service $prog {start|stop|status|restart}"
+        exit 1
+        ;;
+esac

@@ -1,0 +1,6 @@
+usr/local/bin/yellowduckiecoin-qt usr/bin
+share/pixmaps/yellowduckiecoin32.xpm usr/share/pixmaps
+share/pixmaps/yellowduckiecoin16.xpm usr/share/pixmaps
+share/pixmaps/yellowduckiecoin128.png usr/share/pixmaps
+debian/yellowduckiecoin-qt.desktop usr/share/applications
+debian/yellowduckiecoin-qt.protocol usr/share/kde4/services/

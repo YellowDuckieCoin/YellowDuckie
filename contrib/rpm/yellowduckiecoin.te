@@ -1,0 +1,81 @@
+policy_module(yellowduckiecoin, 1.100.1)
+
+########################################
+#
+# Declarations
+#
+
+type yellowduckiecoin_t;
+type yellowduckiecoin_exec_t;
+init_daemon_domain(yellowduckiecoin_t, yellowduckiecoin_exec_t)
+
+permissive yellowduckiecoin_t;
+
+type yellowduckiecoin_initrc_exec_t;
+init_script_file(yellowduckiecoin_initrc_exec_t)
+
+type yellowduckiecoin_conf_t;
+files_type(yellowduckiecoin_conf_t)
+
+type yellowduckiecoin_var_lib_t;
+files_type(yellowduckiecoin_var_lib_t)
+
+type yellowduckiecoin_var_run_t;
+files_type(yellowduckiecoin_var_run_t)
+
+type yellowduckiecoin_port_t;
+corenet_port(yellowduckiecoin_port_t)
+
+########################################
+#
+# yellowduckiecoin local policy
+#
+allow yellowduckiecoin_t self:process { fork };
+
+allow yellowduckiecoin_t self:fifo_file rw_fifo_file_perms;
+allow yellowduckiecoin_t self:unix_stream_socket create_stream_socket_perms;
+
+manage_dirs_pattern(yellowduckiecoin_t, yellowduckiecoin_conf_t, yellowduckiecoin_conf_t)
+manage_files_pattern(yellowduckiecoin_t, yellowduckiecoin_conf_t, yellowduckiecoin_conf_t)
+
+manage_dirs_pattern(yellowduckiecoin_t, yellowduckiecoin_var_lib_t, yellowduckiecoin_var_lib_t)
+manage_files_pattern(yellowduckiecoin_t, yellowduckiecoin_var_lib_t, yellowduckiecoin_var_lib_t)
+files_var_lib_filetrans(yellowduckiecoin_t, yellowduckiecoin_var_lib_t, { dir file })
+
+manage_dirs_pattern(yellowduckiecoin_t, yellowduckiecoin_var_run_t, yellowduckiecoin_var_run_t)
+manage_files_pattern(yellowduckiecoin_t, yellowduckiecoin_var_run_t, yellowduckiecoin_var_run_t)
+
+sysnet_dns_name_resolve(yellowduckiecoin_t)
+corenet_all_recvfrom_unlabeled(yellowduckiecoin_t)
+
+allow yellowduckiecoin_t self:tcp_socket create_stream_socket_perms;
+corenet_tcp_sendrecv_generic_if(yellowduckiecoin_t)
+corenet_tcp_sendrecv_generic_node(yellowduckiecoin_t)
+corenet_tcp_sendrecv_all_ports(yellowduckiecoin_t)
+corenet_tcp_bind_generic_node(yellowduckiecoin_t)
+
+gen_require(`
+    type yellowduckiecoin_port_t;
+')
+allow yellowduckiecoin_t yellowduckiecoin_port_t:tcp_socket name_bind;
+
+gen_require(`
+    type yellowduckiecoin_port_t;
+')
+allow yellowduckiecoin_t yellowduckiecoin_port_t:tcp_socket name_connect;
+
+domain_use_interactive_fds(yellowduckiecoin_t)
+
+files_read_etc_files(yellowduckiecoin_t)
+
+miscfiles_read_localization(yellowduckiecoin_t)
+
+sysnet_dns_name_resolve(yellowduckiecoin_t)
+
+allow yellowduckiecoin_t yellowduckiecoin_exec_t:file execute_no_trans;
+allow yellowduckiecoin_t self:process setsched;
+corecmd_exec_ls(yellowduckiecoin_t)
+corenet_tcp_connect_http_port(yellowduckiecoin_t)
+dev_read_urand(yellowduckiecoin_t)
+fs_getattr_xattr_fs(yellowduckiecoin_t)
+kernel_read_system_state(yellowduckiecoin_t)

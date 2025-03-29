@@ -1,0 +1,92 @@
+#!/sbin/runscript
+
+# backward compatibility for existing gentoo layout 
+#
+if [ -d "/var/lib/yellowduckiecoin/.yellowduckiecoin" ]; then
+	YellowDuckieCoinD_DEFAULT_DATADIR="/var/lib/yellowduckiecoin/.yellowduckiecoin"
+else
+	YellowDuckieCoinD_DEFAULT_DATADIR="/var/lib/yellowduckiecoind"
+fi
+
+YellowDuckieCoinD_CONFIGFILE=${YellowDuckieCoinD_CONFIGFILE:-/etc/yellowduckiecoin/yellowduckiecoin.conf}
+YellowDuckieCoinD_PIDDIR=${YellowDuckieCoinD_PIDDIR:-/var/run/yellowduckiecoind}
+YellowDuckieCoinD_PIDFILE=${YellowDuckieCoinD_PIDFILE:-${YellowDuckieCoinD_PIDDIR}/yellowduckiecoind.pid}
+YellowDuckieCoinD_DATADIR=${YellowDuckieCoinD_DATADIR:-${YellowDuckieCoinD_DEFAULT_DATADIR}}
+YellowDuckieCoinD_USER=${YellowDuckieCoinD_USER:-${YellowDuckieCoin_USER:-yellowduckiecoin}}
+YellowDuckieCoinD_GROUP=${YellowDuckieCoinD_GROUP:-yellowduckiecoin}
+YellowDuckieCoinD_BIN=${YellowDuckieCoinD_BIN:-/usr/bin/yellowduckiecoind}
+YellowDuckieCoinD_NICE=${YellowDuckieCoinD_NICE:-${NICELEVEL:-0}}
+YellowDuckieCoinD_OPTS="${YellowDuckieCoinD_OPTS:-${YellowDuckieCoin_OPTS}}"
+
+name="YellowDuckieCoin Core Daemon"
+description="YellowDuckieCoin cryptocurrency P2P network daemon"
+
+command="/usr/bin/yellowduckiecoind"
+command_args="-pid=\"${YellowDuckieCoinD_PIDFILE}\" \
+		-conf=\"${YellowDuckieCoinD_CONFIGFILE}\" \
+		-datadir=\"${YellowDuckieCoinD_DATADIR}\" \
+		-daemon \
+		${YellowDuckieCoinD_OPTS}"
+
+required_files="${YellowDuckieCoinD_CONFIGFILE}"
+start_stop_daemon_args="-u ${YellowDuckieCoinD_USER} \
+			-N ${YellowDuckieCoinD_NICE} -w 2000"
+pidfile="${YellowDuckieCoinD_PIDFILE}"
+
+# The retry schedule to use when stopping the daemon. Could be either
+# a timeout in seconds or multiple signal/timeout pairs (like
+# "SIGKILL/180 SIGTERM/300")
+retry="${YellowDuckieCoinD_SIGTERM_TIMEOUT}"
+
+depend() {
+	need localmount net
+}
+
+# verify
+# 1) that the datadir exists and is writable (or create it)
+# 2) that a directory for the pid exists and is writable
+# 3) ownership and permissions on the config file
+start_pre() {
+	checkpath \
+	-d \
+	--mode 0750 \
+	--owner "${YellowDuckieCoinD_USER}:${YellowDuckieCoinD_GROUP}" \
+	"${YellowDuckieCoinD_DATADIR}"
+
+	checkpath \
+	-d \
+	--mode 0755 \
+	--owner "${YellowDuckieCoinD_USER}:${YellowDuckieCoinD_GROUP}" \
+	"${YellowDuckieCoinD_PIDDIR}"
+
+	checkpath -f \
+	-o ${YellowDuckieCoinD_USER}:${YellowDuckieCoinD_GROUP} \
+	-m 0660 \
+	${YellowDuckieCoinD_CONFIGFILE}
+
+	checkconfig || return 1
+}
+
+checkconfig()
+{
+	if ! grep -qs '^rpcpassword=' "${YellowDuckieCoinD_CONFIGFILE}" ; then
+		eerror ""
+		eerror "ERROR: You must set a secure rpcpassword to run yellowduckiecoind."
+		eerror "The setting must appear in ${YellowDuckieCoinD_CONFIGFILE}"
+		eerror ""
+		eerror "This password is security critical to securing wallets "
+		eerror "and must not be the same as the rpcuser setting."
+		eerror "You can generate a suitable random password using the following "
+		eerror "command from the shell:"
+		eerror ""
+		eerror "bash -c 'tr -dc a-zA-Z0-9 < /dev/urandom | head -c32 && echo'"
+		eerror ""
+		eerror "It is recommended that you also set alertnotify so you are "
+		eerror "notified of problems:"
+		eerror ""
+		eerror "ie: alertnotify=echo %%s | mail -s \"YellowDuckieCoin Alert\"" \
+			"admin@foo.com"
+		eerror ""
+		return 1
+	fi
+}

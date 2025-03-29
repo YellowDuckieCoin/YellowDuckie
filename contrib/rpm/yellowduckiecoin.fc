@@ -1,0 +1,8 @@
+/usr/bin/yellowduckiecoin-cli		--	gen_context(system_u:object_r:yellowduckiecoin_exec_t,s0)
+/usr/sbin/yellowduckiecoind		--	gen_context(system_u:object_r:yellowduckiecoin_exec_t,s0)
+/usr/lib(64)?/yellowduckiecoin/yellowduckiecoind		--	gen_context(system_u:object_r:yellowduckiecoin_exec_t,s0)
+
+/etc/yellowduckiecoin(/.*)?		gen_context(system_u:object_r:yellowduckiecoin_conf_t,s0)
+/var/lib/yellowduckiecoin(/.*)?		gen_context(system_u:object_r:yellowduckiecoin_var_lib_t,s0)
+
+(/var)?/run/yellowduckiecoind(/.*)?   gen_context(system_u:object_r:yellowduckiecoin_var_run_t,s0)

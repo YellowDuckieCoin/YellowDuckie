@@ -1,0 +1,22 @@
+[Unit]
+Description=YellowDuckieCoin's distributed currency daemon
+After=network.target
+
+[Service]
+User=yellowduckiecoin
+Group=yellowduckiecoin
+
+Type=forking
+PIDFile=/var/lib/yellowduckiecoind/yellowduckiecoind.pid
+ExecStart=/usr/bin/yellowduckiecoind -daemon -pid=/var/lib/yellowduckiecoind/yellowduckiecoind.pid \
+-conf=/etc/yellowduckiecoin/yellowduckiecoin.conf -datadir=/var/lib/yellowduckiecoind -disablewallet
+
+Restart=always
+PrivateTmp=true
+TimeoutStopSec=60s
+TimeoutStartSec=2s
+StartLimitInterval=120s
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target

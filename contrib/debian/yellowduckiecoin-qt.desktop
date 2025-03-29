@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=YellowDuckieCoin Core
+Comment=Connect to the YellowDuckieCoin P2P Network
+Comment[de]=Verbinde mit dem YellowDuckieCoin peer-to-peer Netzwerk
+Comment[fr]=YellowDuckieCoin, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=YellowDuckieCoin, eşten eşe kriptografik sanal para birimi
+Exec=yellowduckiecoin-qt %u
+Terminal=false
+Type=Application
+Icon=yellowduckiecoin128
+MimeType=x-scheme-handler/yellowduckiecoin;
+Categories=Office;Finance;

@@ -1,0 +1,33 @@
+# /etc/conf.d/yellowduckiecoind: config file for /etc/init.d/yellowduckiecoind
+
+# Config file location
+#YellowDuckieCoinD_CONFIGFILE="/etc/yellowduckiecoin/yellowduckiecoin.conf"
+
+# What directory to write pidfile to?  (created and owned by $YellowDuckieCoinD_USER)
+#YellowDuckieCoinD_PIDDIR="/var/run/yellowduckiecoind"
+
+# What filename to give the pidfile
+#YellowDuckieCoinD_PIDFILE="${YellowDuckieCoinD_PIDDIR}/yellowduckiecoind.pid"
+
+# Where to write yellowduckiecoind data (be mindful that the blockchain is large)
+#YellowDuckieCoinD_DATADIR="/var/lib/yellowduckiecoind"
+
+# User and group to own yellowduckiecoind process
+#YellowDuckieCoinD_USER="yellowduckiecoin"
+#YellowDuckieCoinD_GROUP="yellowduckiecoin"
+
+# Path to yellowduckiecoind executable
+#YellowDuckieCoinD_BIN="/usr/bin/yellowduckiecoind"
+
+# Nice value to run yellowduckiecoind under
+#YellowDuckieCoinD_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+#YellowDuckieCoinD_OPTS=""
+
+# The timeout in seconds OpenRC will wait for yellowduckiecoind to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+YellowDuckieCoinD_SIGTERM_TIMEOUT=60
