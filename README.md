@@ -1,62 +1,66 @@
-![YellowDuckieCoin](https://github.com/YellowDuckieCoin/YellowDuckie/assets/161400084/1fb24eaa-4fce-44b2-bece-e1aa6df06d01)
+# Yellow Duckie Coin (YD)
 
+**Version 2.0**
 
-## The Artificial Intelligence Transaction Token (YD)
+## Roadmap
 
+### ✅ Completed
+- Development of YD Solana Token
+- Development of YD POW L1 Mainnet
 
-• Symbol: YD
+### 🔄 In Development
+- YD-Solana Cross-chain Bridge
+- YD Asset Listing on DEX
 
-• Genesis Information: “The Times 29/Jan/2024 Elon Musk says first human has received Neuralink brain implant.”
+### 📈 In Progress
+- YD Listing on Major CEX Exchanges
 
-• Genesis Coin: 5000 (non-movable)
+## Abstract
+Yellow Duckie Coin (YD) is a community-driven meme cryptocurrency built on the Solana blockchain, utilizing the Kawpow proof-of-work algorithm. Our project aims to create an accessible, ASIC-resistant mining ecosystem that supports GPU mining while maintaining high security and scalability.
 
-• Total Supply: 10 billion, precision 8
+## Introduction
+Yellow Duckie Coin emerges as a unique meme cryptocurrency that combines the fun aspects of meme coins with robust technical foundations. By implementing the Kawpow algorithm, we ensure fair distribution and accessibility for miners while maintaining network security.
 
-• Block Time: 15 seconds
+## Technical Specifications
 
-• Block Size: 4 MB
+### Mining Algorithm
+- **Algorithm**: Kawpow
+- **ASIC Resistance**: Yes
+- **Hardware Support**: GPU-optimized
+- **Entry Barrier**: Low
+- **Block Size**: 4MB
+- **Asset Support**: Up to 256 bytes for asset naming
 
-• Transaction Capacity: 500-1200 transactions, varying with transaction type
+### Token Economics
+Yellow Duckie Coin implements a unique token distribution model that combines initial liquidity with sustainable mining rewards:
 
-• Halving Cycle: 91 days
+1. **Initial Distribution**
+   - 50% of total supply available for free trading on Solana
+   - Initial price set at 0.0001 USDC
+   - Ensures immediate market liquidity and accessibility
 
-• Initial Reward: 5000 YD per block
+2. **Mining Distribution**
+   - 50% of total supply allocated for mining rewards
+   - Base mining reward: 10 YD per minute
+   - Lucky miner reward: 1000 YD daily (one lucky winner per day)
+   - Mining rewards will continue until block height 2025
 
-• Mining Period: 3 years
+3. **Mining Reward Structure**
 
-• Mining Algorithm: KAWPOW to resist ASIC
-
-### Mining Pools
-
-https://miningpoolstats.stream/yellowduckiecoin
- 
-#### Gminer
-
-miner.exe –algo kawpow –server mining.pool.yellowduckie.net:10008 –user AekmpQ4gQm6EmfUAJv2AKBReMuenYTZT2y –proto stratum
-pause
-
-#### kawpowminer
-
-kawpowminer.exe -P stratum+tcp://AekmpQ4gQm6EmfUAJv2AKBReMuenYTZT2y.test1@mining.pool.yellowduckie.net:10008
-
-#### Trex-Miner & Team-Red-Miner
-
-
-
-#### Mining Pool ports setting
+```cpp
+CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
+{
+    int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
     
-    mining.pool.yellowduckie.net:10008 for PPLNS mining
-    mining.solo.yellowduckie.net:20008 for SOLO mining
-    
+    if (halvings >= 2025)
+        return 0;
+    CAmount nSubsidy = 10 * COIN;
 
-# YD Social Media
-
-X(Twitter):https://twitter.com/YellowDuckieCoin
-
-Telegram:https://t.me/YellowDuckieCoin
-
-Telegram Group:https://t.me/YellowDuckieCoin_ORG
-
-Discord:https://discord.gg/MUh4NJgU7A
-
-Youtube:https://www.youtube.com/@YellowDuckieCoin_OFFICIAL
+    if (nHeight == 1) {
+        nSubsidy = nSubsidy + 10500000000 * COIN;
+    }
+    if (nHeight % 1440 == 0) { // lucky reward!
+        nSubsidy += 1000 * COIN;
+    }
+    return nSubsidy;
+}
