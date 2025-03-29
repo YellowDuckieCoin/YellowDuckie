@@ -1,4 +1,7 @@
 # Yellow Duckie Coin (YD)
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/ef6dcf1a-f11e-466e-9472-e07b6cd22a43" alt="Yellow Duckie Coin" />
+</div>
 
 **Version 2.0**
 
